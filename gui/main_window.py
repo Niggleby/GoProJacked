@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from gopro.gopro_control import connect_to_gopro, set_mode
+import gui.stream_window as sw
 
 class GoProApp(tk.Tk):
     def __init__(self):
@@ -43,9 +44,4 @@ class GoProApp(tk.Tk):
 
     def open_stream_window(self):
         """Opens the stream window"""
-        import gui.stream_window as sw
         sw.open_stream()
-
-if __name__ == "__main__":
-    app = GoProApp()
-    app.mainloop()
