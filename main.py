@@ -23,7 +23,7 @@ gopro-http-ui/
 │── requirements.txt    # Dependencies
 │── README.md           # Project documentation
 '''
-
+import gopro_control as gopro_control              # Import the gopro_control module
 import sys
 import os
 import requests

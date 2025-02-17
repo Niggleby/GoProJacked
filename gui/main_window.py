@@ -1,11 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
-try:
-    from gopro.gopro_control import connect_to_gopro, set_mode
-    ImportError:
-        messagebox.showerror("Import Error", "gopro_control module not found. Please ensure it is installed correctly.")
-        self.quit()
-    self.quit()
+try:     from gopro.gopro_control import connect_to_gopro, set_mode
+except ImportError:
+    messagebox.showerror("Import Error", "gopro_control module not found. Please ensure it is installed correctly.")
+    exit()
 from stream_window import sw
 
 class GoProApp(tk.Tk):
