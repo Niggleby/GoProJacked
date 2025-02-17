@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
-from gopro.gopro_control import connect_to_gopro, set_mode
-import gui.stream_window as sw
+try:
+    from gopro_control import connect_to_gopro, set_mode
+except ImportError:
+    from gopro.gopro_control.py import connect_to_gopro, set_mode
+import stream_window as sw
 
 class GoProApp(tk.Tk):
     def __init__(self):
@@ -12,7 +15,7 @@ class GoProApp(tk.Tk):
 
         # Connect Button
         self.connect_button = tk.Button(self, text="Connect to GoPro", command=self.connect)
-        self.connect_button.pack(pady=10)
+        self.connect_button.pack(pady=10,)
 
         # Mode Selection
         self.mode_var = tk.StringVar(value="video")
