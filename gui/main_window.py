@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 try:
-    from gopro_control import connect_to_gopro, set_mode
-except ImportError:
-    from gopro.gopro_control.py import connect_to_gopro, set_mode
-import stream_window as sw
+    from gopro.gopro_control import connect_to_gopro, set_mode
+    ImportError:
+        messagebox.showerror("Import Error", "gopro_control module not found. Please ensure it is installed correctly.")
+        self.quit()
+    self.quit()
+from stream_window import sw
 
 class GoProApp(tk.Tk):
     def __init__(self):
