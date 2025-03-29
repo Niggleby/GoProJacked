@@ -26,12 +26,13 @@ gopro-http-ui/
 import gopro.goproControl as goproControl              # Import the gopro_control module
 import sys
 import os
-import requests
+import cv2 
+import requests 
 
 # Add the parent directory to the sys.path to ensure the gui module can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from gui.main_window import GoProApp
+from gui.mainWindow import GoProApp
 
 if __name__ == "__main__":
     app = GoProApp()
