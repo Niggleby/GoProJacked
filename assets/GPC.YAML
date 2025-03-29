@@ -1,0 +1,138 @@
+---
+# Dokument 1: Geräteinfo
+#Über das Gerät:
+Basic_Info:
+    name: "FRITZNas11144021332"
+    type: GoPro 4
+    description: GPC
+    manufacturer: GoPro
+    model: Hero 4
+    firmware: 5.0
+    ssid: 
+    bssid: 
+    mac:
+    ip: 10.5.5.9
+    port: 8080
+
+
+
+# Erstmal die Basic-Requests | Verbindung
+check: http:/10.5.5.9:8080/gp/gpControl/command/shutter/?={0}
+stat: /gp/gpControl/
+
+
+# toggle-mode oder so ähnlich; wo ist Zeitraffer?
+switch:
+    adr: 
+    switchCam: 1
+    switchVid: 0
+
+shutter:
+    ON: valueCam
+    OFF: valueVid
+
+Protune:
+  weißableichnung:
+    3000K: http://10.5.5.9/gp/gpControl/setting/11/0
+    Wert2: http://10.5.5.9/gp/gpControl/setting/11/1
+
+########## GTHUB DOKU IMPORTIEREN ##########
+
+### Protune on HERO4 Session
+
+As per 2.00 firmware version, the GoPro HERO4 Session allows Protune controls for Video mode, but some parameters vary from HERO4 Black/Silver cameras. 
+
+##### Controls:
+
+* off: http://10.5.5.9/gp/gpControl/setting/10/0
+* on: http://10.5.5.9/gp/gpControl/setting/10/1
+
+##### White Balance:
+
+* Auto: http://10.5.5.9/gp/gpControl/setting/11/0
+* 3000k: http://10.5.5.9/gp/gpControl/setting/11/1
+* 5500k: http://10.5.5.9/gp/gpControl/setting/11/2
+* 6500k: http://10.5.5.9/gp/gpControl/setting/11/3
+* Native: http://10.5.5.9/gp/gpControl/setting/11/4
+
+##### Color:
+
+* GOPRO: http://10.5.5.9/gp/gpControl/setting/12/0
+* Flat: http://10.5.5.9/gp/gpControl/setting/12/1
+
+##### ISO:
+
+* 1600: http://10.5.5.9/gp/gpControl/setting/13/1
+* 400: http://10.5.5.9/gp/gpControl/setting/13/2
+
+##### Sharpness:
+
+* ON: http://10.5.5.9/gp/gpControl/setting/14/3
+* OFF: http://10.5.5.9/gp/gpControl/setting/14/4
+
+##### EV:
+
+Value | URL
+-----|-------
++2   |  http://10.5.5.9/gp/gpControl/setting/15/0
++1.5 |  http://10.5.5.9/gp/gpControl/setting/15/1
++1   |  http://10.5.5.9/gp/gpControl/setting/15/2
++0.5 |  http://10.5.5.9/gp/gpControl/setting/15/3
+0    |  http://10.5.5.9/gp/gpControl/setting/15/4
+-0.5 |  http://10.5.5.9/gp/gpControl/setting/15/5
+-1   |  http://10.5.5.9/gp/gpControl/setting/15/6
+-1.5 |  http://10.5.5.9/gp/gpControl/setting/15/7
+-2   |  http://10.5.5.9/gp/gpControl/setting/15/8
+
+
+---
+# Dokument last: Ideen / Notizen:
+#
+## Anker als Referenz für die URL & die Parameter
+## Beispiel:
+
+Commands:
+
+   Camrequests:
+
+       base: &base_config
+
+           Shutter: "/gp/commands/shutter/?="
+
+           switch:  "gp/gpControl/command/shutter/?={0}"
+           mode: "gp/gpControl/command/mode/{0}"
+
+           mode: [0:"Vid",1:"Cam",2":Timelapse"]
+###   ' HÄUFIG BENUTZTE DINGE IN ANKER PACKEN UND REFERENZIEREN'
+   service2:
+
+       config: *service_config
+
+   service3:
+
+       config: *service_config
+#
+### Links:
+### > https://spacelift.io/blog/yaml#what-does-a-regular-yaml-file-look-like
+### > https://www.w3schools.com/python/python_arrays.asp
+#
+#
+### AUfbau einer Request:
+
+            ##!! --- legitimität nicht bestätigt --- !!##
+            ##!! --- Alles nur AI Vorschläge     --- !!##
+
+# [http://<IP>:<PORT>/gp/gpControl/command/<command>]
+# [http://<IP>:<PORT>/gp/gpControl/command/setting/<setting>]
+# [http://<IP>:<PORT>/gp/gpControl/command/mode/<mode>]
+# [http://<IP>:<PORT>/gp/gpControl/command/shutter/<ON/OFF>]
+# [http://<IP>:<PORT>/gp/gpControl/command/storage/<ON/OFF>]
+# [http://<IP>:<PORT>/gp/gpControl/command/record/<ON/OFF>]
+# [http://<IP>:<PORT>/gp/gpControl/command/recording/<ON/OFF>]
+# [http://<IP>:<PORT>/gp/gpControl/command/stream/<ON/OFF>]
+# [http://<IP>:<PORT>/gp/gpControl/command/preview/<ON/OFF>]
+# [http://<IP>:<PORT>/gp/gpControl/command/setting/<setting>/<value>]
+# [http://<IP>:<PORT>/gp/gpControl/command/setting/<setting>/<value>/<value>]
+
+            ##!! --- legitimität nicht bestätigt --- !!##
+            ##!! --- Alles nur AI Vorschläge     --- !!##

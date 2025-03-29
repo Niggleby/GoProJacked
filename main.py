@@ -16,13 +16,14 @@ gopro-http-ui/
 │   ├── stream_window.py # Separate window for GoPro live stream
 │   ├── settings_window.py # Camera settings sub-window
 │── gopro/              # GoPro API interaction
-│   ├── gopro_api.py    # Handles HTTP requests to GoPro
+│   ├── gopro_api.py    # Handles HTTP requests to GoPro  -- macht das Sinn??
 │   ├── gopro_control.py # Basic control functions (e.g., connect, set mode)
 │── assets/             # Images, icons, etc.
 │── main.py             # Entry point of the program
 │── requirements.txt    # Dependencies
 │── README.md           # Project documentation
 '''
+
 
 import sys
 import os
