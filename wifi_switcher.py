@@ -1,19 +1,9 @@
 # WIFI Switcher als unabhängige exec mit eigenem Zwischenspeicher 
-
-
+# und GUI
 
 
 import tkinter as tk
 import subprocess
-
-# Test start Yaml einlesen #
-import yaml
-#from assets import GPC
-with open("assets/GPC.YAML", "r") as file:
-    data = yaml.safe_load(file)
-
-
-# Test end Yaml einlesen #
 
 
 class WifiSwitcher(tk.Tk):

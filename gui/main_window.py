@@ -14,10 +14,12 @@ class GoProApp(tk.Tk):
         self.connect_button = tk.Button(self, text="Connect to GoPro", command=self.connect)
         self.connect_button.pack(pady=10)
 
-        # Mode Selection
+        # Mode Selection_old
         self.mode_var = tk.StringVar(value="video")
         self.mode_menu = tk.OptionMenu(self, self.mode_var, "video", "photo", "timelapse")
         self.mode_menu.pack(pady=10)
+
+        
 
         # Set Mode Button
         self.set_mode_button = tk.Button(self, text="Set Mode", command=self.set_mode)

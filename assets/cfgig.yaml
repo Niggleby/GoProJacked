@@ -1,0 +1,88 @@
+#DOKUMENTATION goprowifihack
+    # Dokument 1: MainVars:
+controls:                
+    mode:           # toggle-mode oder so ähnlich; wo ist Zeitraffer?
+        base: 
+        switchCam: 1
+        switchVid: 0
+
+    shutter:
+        base: "http://10.5.5.9/gp/gpControl/command/shutter/?=" # brauche ich {N}
+        ON: 1
+        OFF: 0
+    #   mode: ?
+
+settings:
+    power:      # geht obv. nicht wieder an, maybe BT?
+        base: "http://10.5.5.9/gp/gpControl/setting/10/"
+        ON: 0
+        OFF: 1
+
+    whitebalance:
+        base: "http://10.5.5.9/gp/gpControl/setting/11/"
+        Auto: 0
+        3000K: 1
+        5500K: 2
+        6500K: 3
+        Native: 4
+    #   settingsNumber: 11
+
+    color:
+        GoPro: 0
+        Flat: 1
+    #   settingsNumber: 12
+
+    ISO:
+        1600: 1
+        400: 2
+    #   settingsNumber: 13
+
+    sharpness:
+        base:
+        ON: 3
+        OFF: 4
+    exposure:
+        Value:
+            +2: 0
+            +1.5: 1
+            +1: 2
+            +0.5: 3
+            0: 4
+            -0.5: 5
+            -1: 6
+            -1.5: 7
+            -2: 8
+
+        ValueList:
+           - 0
+           - -0.5
+           - -1
+           - -1.5
+           - -2
+connection:
+    streaming:
+        status: "http://10.5.5.9/gp/gpControl/status" # muss git GET fkt geholt wertden, soll s.31 > 0 sein
+        restart: "http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=restart"
+        udp: "udp://10.5.5.9:8554"
+
+
+# status URL has to be 'HTTP GET' 
+# until status:31 (number of clients connected) 
+# is set to a value above 0 (>=1). Then the feed 
+# will be live in UDP port 8554.
+## beispiel: [py http get oder whatever] http://10.5.5.9/gp/gpControl/status
+## UDP://10.9.9.4:8554/   <-- stream
+
+Dinfo:
+    name: "FRITZNas11144021332"
+    type: GoPro 4
+    description: Actioncam
+    manufacturer: GoPro
+    model: Hero 4 silver
+    firmware: 5.0
+    ssid: 
+    bssid: 
+    mac:
+    ip: 10.5.5.9
+    port: 8080
+...

@@ -33,6 +33,49 @@ import requests
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from gui.main_window import GoProApp
+import yaml
+#with open("C:/Users/Robin/PyHOME_tst/ProjekteUndRepos/GPJ/GoProJacked/assets/cfgig.yaml", "r") as file:
+#    cfgig = yaml.safe_load(file)
+#    print(cfgig)
+
+#test zu class#
+
+def get_cfgig():
+    """Load configuration from a YAML file"""
+    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "cfgig.yaml")
+    try: # line entfernt, siehe oben
+        with open(config_path, "r") as file:
+            cfgig = yaml.safe_load(file)
+            # print(cfgig)
+        return cfgig
+    except yaml.YAMLError as e:
+        print("Syntax error in configuration file.")
+                        # print("Configuration file not found.")  <-- anderer Fehler
+
+def do_cfgig():
+    """Load other configuration from a YAML file"""
+    try:
+        config_path2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "cfgig.yaml")
+        with open(config_path2, "r") as file2:
+            cfgig2 = yaml.safe_load(file2)
+            # print(cfgig2)
+        return cfgig2
+    except yaml.YAMLError as e2:
+        print("Syntax error in configuration file.")
+                        # print("Configuration file not found.")  <-- anderer Fehler
+        return e2
+##test zu class ende#
+
+#test zu classabruf#
+
+gcfg = get_cfgig
+print(gcfg) 
+#
+dcfg = do_cfgig()
+print(dcfg)
+
+compare = gcfg == dcfg
+###test zu classabruf ende###
 
 if __name__ == "__main__":
     app = GoProApp()
