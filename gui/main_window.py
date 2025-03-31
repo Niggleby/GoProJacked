@@ -46,4 +46,4 @@ class GoProApp(tk.Tk):
 
     def open_stream_window(self):
         """Opens the stream window"""
-        sw.open_stream()
+        sw.open_stream()    

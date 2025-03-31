@@ -74,7 +74,13 @@ print(gcfg)
 dcfg = do_cfgig()
 print(dcfg)
 
-compare = gcfg == dcfg
+compare = dcfg == gcfg
+if compare:
+    print("cfgig == dcfg")
+else:
+    print(gcfg, dcfg)
+    print("cfgig  dcfg")
+#   print(compare)
 ###test zu classabruf ende###
 
 if __name__ == "__main__":
