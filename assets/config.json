@@ -1,0 +1,17 @@
+{
+"shutterOn": "http://10.5.5.9/gp/gpControl/command/shutter/?=1",
+"shutterOff": "http://10.5.5.9/gp/gpControl/command/shutter/?=0",
+"powerOn": "http://10.5.5.9/gp/gpControl/setting/10/0",
+"powerOff": "http://10.5.5.9/gp/gpControl/setting/10/1",
+"whiteB_auto": "http://10.5.5.9/gp/gpControl/setting/11/0",
+"whiteB_3k": "http://10.5.5.9/gp/gpControl/setting/11/1",
+"whiteB_55k": "http://10.5.5.9/gp/gpControl/setting/11/2",
+"whiteB_65k": "http://10.5.5.9/gp/gpControl/setting/11/3",
+"whiteB_native": "http://10.5.5.9/gp/gpControl/setting/11/4",
+"colGopro": "http://10.5.5.9/gp/gpControl/setting/12/0",
+"colFlat": "http://10.5.5.9/gp/gpControl/setting/12/1",
+"isoHi": "http://10.5.5.9/gp/gpControl/setting/12/0",
+"isoLo":"http://10.5.5.9/gp/gpControl/setting/13/1",
+"shrpOn": "http://10.5.5.9/gp/gpControl/setting/14/3",
+"shrpOff": "http://10.5.5.9/gp/gpControl/setting/14/4"
+}

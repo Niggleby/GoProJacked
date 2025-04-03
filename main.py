@@ -1,87 +1,58 @@
-'''
-print("GOPRO UI STARTING...")
-#wait(1)  # wait for 1 seconds
-print("...")
-#wait(0.1)  # wait for 5 seconds
-print("............")
-#wait(2)
-print("GOPRO UI STARTED")
-'''
-
-## Wanted Structure for repo and scripts:
-'''
-gopro-http-ui/
-│── gui/                # GUI-related files
-│   ├── main_window.py  # Main app window
-│   ├── stream_window.py # Separate window for GoPro live stream
-│   ├── settings_window.py # Camera settings sub-window
-│── gopro/              # GoPro API interaction
-│   ├── gopro_api.py    # Handles HTTP requests to GoPro  -- macht das Sinn??
-│   ├── gopro_control.py # Basic control functions (e.g., connect, set mode)
-│── assets/             # Images, icons, etc.
-│── main.py             # Entry point of the program
-│── requirements.txt    # Dependencies
-│── README.md           # Project documentation
-'''
-
-
 import sys
 import os
+import json
 import requests
+import tkinter as tk
+from tkinter import messagebox
 
-# Add the parent directory to the sys.path to ensure the gui module can be found
+# Füge das GUI-Modul ein (falls nötig)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from gui.main_window import GoProApp
-import yaml
-#with open("C:/Users/Robin/PyHOME_tst/ProjekteUndRepos/GPJ/GoProJacked/assets/cfgig.yaml", "r") as file:
-#    cfgig = yaml.safe_load(file)
-#    print(cfgig)
+class GoProApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
 
-#test zu class#
+        self.title("GoPro Controller")
+        self.geometry("400x300")
 
-def get_cfgig():
-    """Load configuration from a YAML file"""
-    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "cfgig.yaml")
-    try: # line entfernt, siehe oben
-        with open(config_path, "r") as file:
-            cfgig = yaml.safe_load(file)
-            # print(cfgig)
-        return cfgig
-    except yaml.YAMLError as e:
-        print("Syntax error in configuration file.")
-                        # print("Configuration file not found.")  <-- anderer Fehler
+        # JSON-Datei laden
+        self.config = self.load_config()
 
-def do_cfgig():
-    """Load other configuration from a YAML file"""
-    try:
-        config_path2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "cfgig.yaml")
-        with open(config_path2, "r") as file2:
-            cfgig2 = yaml.safe_load(file2)
-            # print(cfgig2)
-        return cfgig2
-    except yaml.YAMLError as e2:
-        print("Syntax error in configuration file.")
-                        # print("Configuration file not found.")  <-- anderer Fehler
-        return e2
-##test zu class ende#
+        # Dropdown für HTTP-Befehle
+        self.command_var = tk.StringVar(self)
+        self.command_var.set(next(iter(self.config.keys())))  # Standardwert (erster Key)
 
-#test zu classabruf#
+        self.command_menu = tk.OptionMenu(self, self.command_var, *self.config.keys())
+        self.command_menu.pack(pady=10)
 
-gcfg = get_cfgig
-print(gcfg) 
-#
-dcfg = do_cfgig()
-print(dcfg)
+        # Senden-Button
+        self.send_button = tk.Button(self, text="Send Command", command=self.send_command)
+        self.send_button.pack(pady=10)
 
-compare = dcfg == gcfg
-if compare:
-    print("cfgig == dcfg")
-else:
-    print(gcfg, dcfg)
-    print("cfgig  dcfg")
-#   print(compare)
-###test zu classabruf ende###
+    def load_config(self):
+        """Lädt die JSON-Datei als Dictionary."""
+        try:
+            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "config.json")
+            with open(config_path, "r") as file:
+                return json.load(file)
+        except Exception as e:
+            messagebox.showerror("Error", f"Could not load config file: {e}")
+            return {}
+
+    def send_command(self):
+        """Sendet den ausgewählten HTTP-Request."""
+        command = self.command_var.get()
+        url = self.config.get(command)
+
+        if not url:
+            messagebox.showerror("Error", "Invalid command selected.")
+            return
+
+        try:
+            response = requests.get(url, timeout=5)
+            messagebox.showinfo("Response", f"Status: {response.status_code}\n{response.text}")
+        except requests.RequestException as e:
+            messagebox.showerror("Error", f"Request failed: {e}")
 
 if __name__ == "__main__":
     app = GoProApp()
