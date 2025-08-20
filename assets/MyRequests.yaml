@@ -1,0 +1,6 @@
+# Foo
+# status: "http://10.5.5.9/gp/gpControl/status"
+modes:
+  mainmodes:
+  submodes:
+settings:

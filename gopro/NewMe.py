@@ -1,11 +1,14 @@
+### Idk, is ne experimentelle File oder so, maybe NewMai maan ###
 import requests
 import yaml
 import glob
 # import json
-import os
+import os   # oder shutil
+import shutil
 # import time
-dir
+
 ### Variables
+profilename = "FRITZNas11144021332"
 GOPRO_IP = "10.5.5.9"  # Default GoPro IP when connected via WiFi
 gpath = glob.glob('*.yaml')
 fname = 'GoProJacked\\assets\\cfgig.yaml'
@@ -25,7 +28,7 @@ with open(pth, 'r') as file:
 
 print(f"Configuration loaded: {config}{lb}")
 
-'''
+
 ###Functions
 def connect_to_gopro():
 #def goproControl():
@@ -37,14 +40,10 @@ def connect_to_gopro():
         return False
 
 
-
-
-
-
- #Start of request-part
+ ### Start of request-part ###
     try:
         response = requests.get(f"http://{GOPRO_IP}/gp/gpControl/command/mode?p={mode_mapping[mode]}")
         return response.status_code == 200
     except requests.ConnectionError:
         return False
-'''
+
