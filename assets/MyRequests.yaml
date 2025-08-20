@@ -1,6 +1,18 @@
-# Foo
-# status: "http://10.5.5.9/gp/gpControl/status"
-modes:
-  mainmodes:
-  submodes:
+status: "http://10.5.5.9/gp/gpControl/status"
+shutter:
+  a: "http://10.5.5.9/gp/gpControl/command/shutter?p=1"
+  b: "http://10.5.5.9/gp/gpControl/command/shutter?p=0"
 settings:
+  protune:
+    active:
+      is_on: "http://10.5.5.9/gp/gpControl/setting/10/1"
+      is_off: "http://10.5.5.9/gp/gpControl/setting/10/0"
+    whitebalance:
+      auto: "http://10.5.5.9/gp/gpControl/setting/11/0"
+      3000K: "http://10.5.5.9/gp/gpControl/setting/11/1"
+      5500K: "http://10.5.5.9/gp/gpControl/setting/11/2"
+      6500K: "http://10.5.5.9/gp/gpControl/setting/11/3"
+      native: "http://10.5.5.9/gp/gpControl/setting/11/4"
+    color:
+      gopro: "http://10.5.5.9/gp/gpControl/setting/12/0"
+      flat: "http://10.5.5.9/gp/gpControl/setting/12/1"
