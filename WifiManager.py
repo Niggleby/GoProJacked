@@ -4,25 +4,50 @@
 # import os
 # import time  >>  vllt benötigt fürs warten auf verbindungen
 import subprocess
-import re  
+import re       # RegEx [ ^\s*SSID-Name\s*:\s*(.+)$] mit  flags=re.MULTILINE  ==> holt SSID-Name z.b. aus stdout!!
 
-# Einfacher Aufruf (empfohlen)
-cp = subprocess.run(
-    ["netsh", "wlan", "show", "interfaces"],
+
+pname = "FRITZNas11144021332"
+
+def check_profile(profile) -> bool:        # '-> bool' definiert Rückgabetyp der Funktion, ist FREIWILLIG
+    """Vergleicht eingabeArgument mit akutell aktivem Profil und gibt bool aus"""
+    cp = subprocess.run(
+    ["netsh", "wlan", "show", "interfaces", f'profiles', f'name={profile}'],
     capture_output=True,     # stdout/stderr einsammeln
 	text=True,               # Dekoaaqefgalirgdiere zu str (statt bytes)
     check=False,             # Fehler nicht automatisch werfen
-    timeout=10               # optional: Abbruch nach 10s
-)
-print(cp.returncode, cp.stdout)
+    timeout=10,               # optional: Abbruch nach 10s
+    encoding="utf-8",
+    errors="replace"
+    )   # wenn cp.returncode = 0 ==> success  \\ es folgt regex-fix Versuch
+    vgl = re.search(r"^\s*Profil\s*:\s*(.+)$", cp.stdout, flags=re.MULTILINE).group(1).lower().strip()
+    if (cp.returncode == 0):        # bei Erfolg
+        print("success!!")
+        return (vgl == profile.lower().strip())
+    else:
+        print(vgl)
+        print(f"FAIIIIIL \nProfilname aus Eingabe (show conn): {profile.lower().strip()}")
+        print(cp.stdout)
+   
+check_profile(pname)
+#print(show_conn())
 
-# Fehler aktiv werfen lassen
-subprocess.run(["netsh", "wlan", "connect", "name=MeinProfil"], check=True)
+#### ==> Try von GPT: ####
 
-# Nur die Ausgabe (throw-on-error)
-out = subprocess.check_output(["ipconfig"], text=True)
+def get_current_ssid() -> str | None:
+    """listet vorhandene wlan-interfaces und gibt aktuelle !SSID! aus => als return"""
+    sp = subprocess.run(
+        ["netsh", "wlan", "show", "interfaces"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace"
+    )
+    if sp.returncode != 0:
+        print(f"ERROR -- Returncode nicht null {sp.returncode}")
+        return None         # returncode == 0 bedeutet succes! > Hier wird bei Fehlschlag 'None' returned
+    # Zeile "SSID : <name>" (nicht BSSID)
+    m = re.search(r"^\s*SSID\s*:\s*(.+)$", sp.stdout, flags=re.MULTILINE)
+    if not m:
+        return f"=========\nKeine Übereinstimmung in folgendem:\n{sp.stdout}\n========="
+    ssid = m.group(1).strip()       # ==> .group(n) gibt die n-te matching group an, sollten mehrere existieren & .strip() entfernt leerzeichen vor&nach match
+    return ssid if ssid and ssid.upper() != "N/A" else "Stripz nich hoems"
+print(f"SSID aus current ssid: \n{get_current_ssid()}")       # ==> Zeigt Funktionsausgabe
 
-# Fortgeschritten: langer Prozess/Streaming
-p = subprocess.Popen(["ping", "10.5.5.9", "-t"], stdout=subprocess.PIPE, text=True)
-line = p.stdout.readline()
-p.terminate()
