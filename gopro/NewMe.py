@@ -45,13 +45,13 @@ def gp_send(data, path):
 
 # Beispielverwendung
 if __name__ == "__main__":
-    data = load_yaml("assets/MyRequests.yaml")
+    ydata = load_yaml("assets/MyRequests.yaml")
 
     # Status-URL holen
 # print(navigate(data, ["status"]))
     # -> http://10.5.5.9/gp/gpControl/status
 
-gp_send(data, ["settings", "protune", "active", "is_on"])
+gp_send(ydata, ["settings", "protune", "active", "is_on"])
 '''
     # Shutter ON
     print(navigate(data, ["shutter", "on"]))
