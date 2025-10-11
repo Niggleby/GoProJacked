@@ -35,11 +35,11 @@ def send_request(url, tab_name=None):
         status_output_box.delete("1.0", "end")
         status_output_box.insert("end", msg)
     else:
-        messagebox.showinfo("HTTP Response", msg)
-
+        # messagebox.showinfo("HTTP Response", msg)
+        status_output_box.insert("\n", [{url}], {msg})
 
 # Load YAML
-yaml_path = os.path.join(os.path.dirname(__file__), '../assets/MyRequests.yaml')
+yaml_path = os.path.join(os.path.dirname(__file__), '../assets/MyRequests.yaml')    
 with open(yaml_path, 'r', encoding='utf-8') as f:
     data = yaml.safe_load(f)
 

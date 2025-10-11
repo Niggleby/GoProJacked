@@ -99,3 +99,116 @@ Commands:
 
             ##!! --- legitimität nicht bestätigt --- !!##
             ##!! --- Alles nur AI Vorschläge     --- !!##
+
+## Alte MyRequests.yaml:
+```yaml  
+  status: "http://10.5.5.9/gp/gpControl/status"
+  boot_mode:
+    video: "http://10.5.5.9/gp/gpControl/setting/53/0"
+    photo: "http://10.5.5.9/gp/gpControl/setting/53/1"
+    multishot: "http://10.5.5.9/gp/gpControl/setting/53/2"
+  mode:
+    video: "http://10.5.5.9/gp/gpControl/command/mode?p=0"
+    photo: "http://10.5.5.9/gp/gpControl/command/mode?p=1"
+    multishot: "http://10.5.5.9/gp/gpControl/command/mode?p=2"
+  sub_mode:
+    video:
+      video: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=0&sub_mode=0"
+      timelapse_video: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=0&sub_mode=1"
+      video_photo: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=0&sub_mode=2"
+      looping: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=0&sub_mode=3"
+    photo:
+      single: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=1&sub_mode=0"
+      continuous: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=1&sub_mode=1"
+      night: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=1&sub_mode=2"
+    multishot:
+      burst: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=2&sub_mode=0"
+      timelapse: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=2&sub_mode=1"
+      nightlapse: "http://10.5.5.9/gp/gpControl/command/sub_mode?mode=2&sub_mode=2"
+  locate:
+    on: "http://10.5.5.9/gp/gpControl/command/system/locate?p=1"
+    off: "http://10.5.5.9/gp/gpControl/command/system/locate?p=0"
+  power:
+    off: "http://10.5.5.9/gp/gpControl/command/system/sleep"
+  tag_moment: "http://10.5.5.9/gp/gpControl/command/storage/tag_moment"
+  video:
+    resolution:
+      4k: "http://10.5.5.9/gp/gpControl/setting/2/1"
+      2.7k: "http://10.5.5.9/gp/gpControl/setting/2/4"
+      2.7k_4_3: "http://10.5.5.9/gp/gpControl/setting/2/6"
+      1440p: "http://10.5.5.9/gp/gpControl/setting/2/7"
+      1080p_superview: "http://10.5.5.9/gp/gpControl/setting/2/8"
+      1080p: "http://10.5.5.9/gp/gpControl/setting/2/9"
+      960p: "http://10.5.5.9/gp/gpControl/setting/2/10"
+      720p_superview: "http://10.5.5.9/gp/gpControl/setting/2/11"
+      720p: "http://10.5.5.9/gp/gpControl/setting/2/12"
+      wvga: "http://10.5.5.9/gp/gpControl/setting/2/13"
+    frame_rate:
+      240fps: "http://10.5.5.9/gp/gpControl/setting/3/0"
+      120fps: "http://10.5.5.9/gp/gpControl/setting/3/1"
+      100fps: "http://10.5.5.9/gp/gpControl/setting/3/2"
+      60fps: "http://10.5.5.9/gp/gpControl/setting/3/5"
+      50fps: "http://10.5.5.9/gp/gpControl/setting/3/6"
+      48fps: "http://10.5.5.9/gp/gpControl/setting/3/7"
+      30fps: "http://10.5.5.9/gp/gpControl/setting/3/8"
+      25fps: "http://10.5.5.9/gp/gpControl/setting/3/9"
+      24fps: "http://10.5.5.9/gp/gpControl/setting/3/10"
+      15fps: "http://10.5.5.9/gp/gpControl/setting/3/11"
+      12_5fps: "http://10.5.5.9/gp/gpControl/setting/3/12"
+    fov:
+      wide: "http://10.5.5.9/gp/gpControl/setting/4/0"
+      medium: "http://10.5.5.9/gp/gpControl/setting/4/1"
+      narrow: "http://10.5.5.9/gp/gpControl/setting/4/2"
+    low_light:
+      on: "http://10.5.5.9/gp/gpControl/setting/8/1"
+      off: "http://10.5.5.9/gp/gpControl/setting/8/0"
+    looping_duration:
+      max: "http://10.5.5.9/gp/gpControl/setting/6/0"
+      5min: "http://10.5.5.9/gp/gpControl/setting/6/1"
+      20min: "http://10.5.5.9/gp/gpControl/setting/6/2"
+      60min: "http://10.5.5.9/gp/gpControl/setting/6/3"
+      120min: "http://10.5.5.9/gp/gpControl/setting/6/4"
+    video_photo_interval:
+      5: "http://10.5.5.9/gp/gpControl/setting/7/1"
+      10: "http://10.5.5.9/gp/gpControl/setting/7/2"
+      30: "http://10.5.5.9/gp/gpControl/setting/7/3"
+      60: "http://10.5.5.9/gp/gpControl/setting/7/4"
+    video_timelapse_interval:
+      0_5: "http://10.5.5.9/gp/gpControl/setting/5/0"
+      1: "http://10.5.5.9/gp/gpControl/setting/5/1"
+      2: "http://10.5.5.9/gp/gpControl/setting/5/2"
+      5: "http://10.5.5.9/gp/gpControl/setting/5/3"
+      10: "http://10.5.5.9/gp/gpControl/setting/5/4"
+      30: "http://10.5.5.9/gp/gpControl/setting/5/5"
+      60: "http://10.5.5.9/gp/gpControl/setting/5/6"
+    spot_meter:
+      off: "http://10.5.5.9/gp/gpControl/setting/9/0"
+      on: "http://10.5.5.9/gp/gpControl/setting/9/1"
+    protune:
+      off: "http://10.5.5.9/gp/gpControl/setting/10/0"
+      on: "http://10.5.5.9/gp/gpControl/setting/10/1"
+    white_balance:
+      auto: "http://10.5.5.9/gp/gpControl/setting/11/0"
+      3000k: "http://10.5.5.9/gp/gpControl/setting/11/1"
+      4000k: "http://10.5.5.9/gp/gpControl/setting/11/5"
+      4800k: "http://10.5.5.9/gp/gpControl/setting/11/6"
+      5500k: "http://10.5.5.9/gp/gpControl/setting/11/2"
+      6000k: "http://10.5.5.9/gp/gpControl/setting/11/7"
+      6500k: "http://10.5.5.9/gp/gpControl/setting/11/3"
+      native: "http://10.5.5.9/gp/gpControl/setting/11/4"
+    color:
+      gopro: "http://10.5.5.9/gp/gpControl/setting/12/0"
+      flat: "http://10.5.5.9/gp/gpControl/setting/12/1"
+    iso_limit:
+      6400: "http://10.5.5.9/gp/gpControl/setting/13/0"
+      1600: "http://10.5.5.9/gp/gpControl/setting/13/1"
+      400: "http://10.5.5.9/gp/gpControl/setting/13/2"
+      3200: "http://10.5.5.9/gp/gpControl/setting/13/3"
+      800: "http://10.5.5.9/gp/gpControl/setting/13/4"
+      200: "http://10.5.5.9/gp/gpControl/setting/13/7"
+      100: "http://10.5.5.9/gp/gpControl/setting/13/8"
+    sharpness:
+      high: "http://10.5.5.9/gp/gpControl/setting/14/0"
+      med: "http://10.5.5.9/gp/gpControl/setting/14/1"
+      low: "http://10.5.5.9/gp/gpControl/setting/14/2"
+      ```

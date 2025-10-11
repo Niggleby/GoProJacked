@@ -21,7 +21,8 @@ def check_profile(profile) -> bool:        # '-> bool' definiert Rückgabetyp de
     encoding="utf-8",
     errors="replace"
     )   # wenn cp.returncode = 0 ==> success  \\ es folgt regex-fix Versuch
-    vgl = re.search(r"^\s*Profil\s*:\s*(.+)$", cp.stdout, flags=re.MULTILINE).group(1).lower().strip()
+    match = re.search(r"^\s*Profil\s*:\s*(.+)$", cp.stdout, flags=re.MULTILINE)
+    vgl = match.group(1).lower().strip() if match else ""
     if (cp.returncode == 0):        # bei Erfolg
         # print("success!!")
         return (vgl == profile.lower().strip())
