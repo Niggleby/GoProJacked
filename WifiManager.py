@@ -4,6 +4,7 @@
 # import os
 # import time  >>  vllt benötigt fürs warten auf verbindungen
 
+#Aktuell benutze Funktionen (von 'NewGUI.py > get_current_ssid, gp_connect')
 import subprocess
 import re       # RegEx [ ^\s*SSID-Name\s*:\s*(.+)$] mit  flags=re.MULTILINE  ==> holt SSID-Name z.b. aus stdout!!
 

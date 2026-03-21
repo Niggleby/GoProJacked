@@ -1,6 +1,5 @@
 ### TK & CTK Versuch Nr_2 ###
 
-
 import tkinter as tk
 import customtkinter as ctk
 from tkinter import messagebox
@@ -8,9 +7,21 @@ import yaml
 import requests
 import os
 import sys
+from datetime import datetime
+
 # Hinzufügen des übergeordneten Verzeichnisses zum Pfad
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from WifiManager import get_current_ssid, gp_connect
+
+### Unterscheidung Win <-> Linux für entsprechenden WfifManager ###
+OS = os.name
+print(OS)
+if OS == "posix":
+    from LinuxWifiManager import get_current_ssid, gp_connect
+    print("Linux-OS identifiziert - LinuxWifiManager geladen")
+elif OS == "nt":
+    from WifiManager import get_current_ssid, gp_connect
+    print("Windows-OS identifiziert - WifiManager geladen")
+else: print("[ERROR] OS nicht erkannt - kein WifiManager geladen")
 
 ''' Alte methode - kurz pausiert
 def send_request(url):
@@ -28,15 +39,39 @@ def send_request(url, tab_name=None):
     '''Sendet eine HTTP-GET-Anfrage und zeigt die Antwort an.'''
     try:
         response = requests.get(url, timeout=5)
-        msg = f"Status: {response.status_code}\n{response.text}"
+        status_line = f"Status: {response.status_code}"
+        raw_text = response.text
+        msg = f"{status_line}\n{raw_text}"
     except Exception as e:
-        msg = f"Error: {e}"
+        status_line = "Error"
+        raw_text = str(e)
+        msg = f"{status_line}: {raw_text}"
+
     if tab_name == 'status':
-        status_output_box.delete("1.0", "end")
-        status_output_box.insert("end", msg)
+        # store in history with timestamp
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        status_history.append((ts, raw_text))
+        if comparison_var.get():
+            # append numbered entry to history box
+            hb = getattr(status_output_frame, '_history_box', None)
+            db = getattr(status_output_frame, '_diff_box', None)
+            if hb:
+                idx = len(status_history)
+                hb.insert("end", f"[{idx}] {ts}\n{raw_text}\n\n")
+                hb.see("end")
+            # compute diff between first and latest
+            if len(status_history) >= 2 and db:
+                first = status_history[0][1]
+                latest = status_history[-1][1]
+                diff_text = compute_diff(first, latest)
+                db.delete("1.0", "end")
+                db.insert("end", diff_text)
+        else:
+            # default: replace single status_output_box
+            status_output_box.delete("1.0", "end")
+            status_output_box.insert("end", msg)
     else:
-        # messagebox.showinfo("HTTP Response", msg)
-        status_output_box.insert("\n", [{url}], {msg})
+        messagebox.showinfo("HTTP Response", msg)
 
 # Load YAML
 yaml_path = os.path.join(os.path.dirname(__file__), '../assets/MyRequests.yaml')    
@@ -61,6 +96,88 @@ status_output_label = ctk.CTkLabel(status_output_frame, text="Status Output:", f
 status_output_label.pack(anchor="n", pady=(10, 0))
 status_output_box = ctk.CTkTextbox(status_output_frame)
 status_output_box.pack(fill="both", expand=True, padx=10, pady=(5, 10))
+
+# Comparison mode control and second textbox (initially hidden)
+comparison_var = tk.BooleanVar(value=False)
+def toggle_comparison():
+    enabled = comparison_var.get()
+    if enabled:
+        # clear any existing boxes and reset history on (re)activation
+        hb_old = getattr(status_output_frame, '_history_box', None)
+        db_old = getattr(status_output_frame, '_diff_box', None)
+        if hb_old:
+            hb_old.place_forget()
+            hb_old.destroy()
+            delattr(status_output_frame, '_history_box')
+        if db_old:
+            db_old.place_forget()
+            db_old.destroy()
+            delattr(status_output_frame, '_diff_box')
+        # clear the single-box if present
+        try:
+            status_output_box.pack_forget()
+        except Exception:
+            pass
+        # reset history
+        status_history.clear()
+        # create two equally sized boxes using place so they stay equal
+        # leave some space at top for the label
+        top_rely = 0.12
+        box_relheight = 0.42
+        padx_rel = 0.02
+        status_history_box = ctk.CTkTextbox(status_output_frame)
+        status_history_box.place(relx=padx_rel, rely=top_rely, relwidth=1 - 2*padx_rel, relheight=box_relheight)
+        status_diff_box = ctk.CTkTextbox(status_output_frame)
+        status_diff_box.place(relx=padx_rel, rely=top_rely + box_relheight + 0.02, relwidth=1 - 2*padx_rel, relheight=box_relheight)
+        setattr(status_output_frame, '_history_box', status_history_box)
+        setattr(status_output_frame, '_diff_box', status_diff_box)
+    else:
+        # remove split and restore single box
+        hb = getattr(status_output_frame, '_history_box', None)
+        db = getattr(status_output_frame, '_diff_box', None)
+        if hb:
+            hb.place_forget()
+            hb.destroy()
+            delattr(status_output_frame, '_history_box')
+        if db:
+            db.place_forget()
+            db.destroy()
+            delattr(status_output_frame, '_diff_box')
+        status_output_box.pack(fill="both", expand=True, padx=10, pady=(5,10))
+
+comp_chk = ctk.CTkCheckBox(status_output_frame, text="Comparison mode", variable=comparison_var, command=toggle_comparison)
+comp_chk.place(relx=0.5, rely=0.02, anchor="n")
+
+# Storage for history
+status_history = []  # list of (timestamp_str, raw_text, parsed_json_or_none)
+
+def try_parse_json(text):
+    try:
+        import json
+        return json.loads(text)
+    except Exception:
+        return None
+
+def compute_diff(first, latest):
+    # If both are dict-like, show keys with different values
+    import json
+    a = try_parse_json(first)
+    b = try_parse_json(latest)
+    diffs = []
+    if isinstance(a, dict) and isinstance(b, dict):
+        all_keys = sorted(set(a.keys()) | set(b.keys()))
+        for k in all_keys:
+            va = a.get(k)
+            vb = b.get(k)
+            if va != vb:
+                diffs.append(f"{k}: {va} -> {vb}")
+        return "\n".join(diffs) if diffs else "(no differences)"
+    # Fallback: simple line-based diff
+    import difflib
+    da = first.splitlines(keepends=False)
+    db = latest.splitlines(keepends=False)
+    diff = difflib.unified_diff(da, db, lineterm='')
+    return "\n".join(list(diff)) or "(no differences)"
 
 
 def add_widgets(parent, node, tab_name=None):

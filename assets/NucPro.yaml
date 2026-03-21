@@ -1,0 +1,8 @@
+YAML version: "1.0"
+shutter:
+  trigger: "http://10.5.5.9/gp/gpControl/command/shutter?p=1"
+  stopvid: "http://10.5.5.9/gp/gpControl/command/shutter?p="
+setboot:
+  video: "http://10.5.5.9/gp/gpControl/setting/53/0"
+  photo: "http://10.5.5.9/gp/gpControl/setting/53/1"
+  multishot: "http://10.5.5.9/gp/gpControl/setting/53/2"
