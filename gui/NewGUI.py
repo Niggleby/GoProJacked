@@ -4,10 +4,12 @@ import tkinter as tk
 import customtkinter as ctk
 from tkinter import messagebox
 import yaml
+import json # -> für status-diff
 import requests
 import os
 import sys
 from datetime import datetime
+import difflib # -> für diff-Ansicht
 
 # Hinzufügen des übergeordneten Verzeichnisses zum Pfad
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -160,7 +162,6 @@ def try_parse_json(text):
 
 def compute_diff(first, latest):
     # If both are dict-like, show keys with different values
-    import json
     a = try_parse_json(first)
     b = try_parse_json(latest)
     diffs = []
@@ -173,7 +174,6 @@ def compute_diff(first, latest):
                 diffs.append(f"{k}: {va} -> {vb}")
         return "\n".join(diffs) if diffs else "(no differences)"
     # Fallback: simple line-based diff
-    import difflib
     da = first.splitlines(keepends=False)
     db = latest.splitlines(keepends=False)
     diff = difflib.unified_diff(da, db, lineterm='')

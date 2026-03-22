@@ -1,9 +1,5 @@
 # Anpassung der funktionierenden 'GoProStream.py' von KonradIT an GPJ-Projekt
-''' ## alte imports ##
-import signal           # -> Tastaturinput abfangen
-import http             # -> Fehlerklassen wie z.B. 'BadStatusLine'
-from urllib.request import urlopen
-'''
+
 ### IMPORTS ###
 import time
 import requests         # -> für http-requests
@@ -18,7 +14,7 @@ class GoProClient:
         self.keep_alive_running = False
 
     def start_stream(self):
-        """Startet den Livestream auf der GoPro"""
+        """Startet den Livestream auf der GoPro mit http-request"""
         url = f"{self.base_url}/gp/gpControl/execute"
         params = {
             "p1": "gpStream",
@@ -35,7 +31,8 @@ class GoProClient:
             return False #Test
 
     def _keep_alive(self):
-        """Sendet regelmäßig UDP Keep-Alive Pakete"""
+        """NICHT EINZELN AUFRUFEN
+        Sendet regelmäßig UDP Keep-Alive Pakete"""
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         message = b"_GPHD_:0:0:2:0\n"
 
@@ -44,6 +41,7 @@ class GoProClient:
             time.sleep(2.5)
 
     def start_keep_alive(self):
+        """startet periodische keep-Alive Anfragen bis 'stop_keep_alive() ausgeführt wird'"""
         self.keep_alive_running = True
         thread = threading.Thread(target=self._keep_alive, daemon=True)
         thread.start()
@@ -53,16 +51,49 @@ class GoProClient:
 
 
     def show_stream(self):
-        """Startet ffplay zur Anzeige des Streams"""
+        """Startet ffplay zur direkten Anzeige des Streams"""
         cmd = [
             "ffplay",
             "-fflags", "nobuffer",
             "-f:v", "mpegts",
             "udp://10.5.5.9:8554"]
-
         subprocess.run(cmd)
 
+    def start_proxy_stream(self):
+        """startet Thread für decoding mit ffmpeg und internes restreaming auf Port 5000"""
+        cmd_old = [
+            "ffmpeg",
+            "-fflags", "nobuffer",
+            "-f:v", "mpegts",
+            "-probesize", "8192",
+            "-i", "udp://10.5.5.9:8554",
+            "-f", "mpegts",
+            "-vcodec", "copy",
+            "udp://127.0.0.1:5000"
+        ]
+        cmd = [
+    "ffmpeg",
+    "-fflags", "nobuffer",
+    "-flags", "low_delay",
+    "-fflags", "+genpts",
+    "-i", "udp://10.5.5.9:8554",
+    "-f", "mpegts",
+    "-vcodec", "copy",
+    "udp://127.0.0.1:5000"]
+        self.ffmpeg_process = subprocess.Popen(cmd)
+### folgendes ersetzt durch self.ffmpeg_process
+#        thread = threading.Thread(
+#            target=subprocess.Popen,
+#            args=(cmd,),
+#            daemon=True)
+#        thread.start()    
 
+    def stop_proxy_stream(self):
+        if hasattr(self, "ffmpeg_process"):
+            self.ffmpeg_process.terminate()
+            self.ffmpeg_process.wait()
+
+'''nicht nutzbar aktuell
     def start(self):
         """Startet alles"""
         self.start_stream()
@@ -72,8 +103,10 @@ class GoProClient:
     def stop(self):
         """stoppt (alles?)"""
         self.stop_keep_alive()
+'''
 
 # Tests:
-
+'''
 mygp = GoProClient()
 mygp.start()
+'''
